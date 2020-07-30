@@ -1,0 +1,50 @@
+version: '2'
+services:
+  image_converter:
+    container_name: image_converter
+    build:
+      context: ./services/image-converter/
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    volumes:
+      - /usr/app/node_modules
+      - .:/usr/app
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq
+    links:
+      - rabbitmq
+    ports:
+      - 3090:3090
+    depends_on:
+      - rabbitmq
+#  waitforrabbit:
+#    container_name: wait_for_rabbit
+#    image: dadarek/wait-for-dependencies
+#    depends_on:
+#      - rabbitmq
+#    command: rabbitmq:5672
+#    entrypoint: ["wait-for-it.sh", "-s" , "-t", "20", "conteiner_a:8000", "--"]
+  rabbitmq:
+    image: 'rabbitmq:3.6.6-management'
+    ports:
+      - "4369:4369"
+      - "5672:5672"
+      - "15672:15672"
+      - "25672:25672"
+      - "35197:35197"
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      - ./data/logs:/var/log/rabbitmq
+    hostname: rabbit
