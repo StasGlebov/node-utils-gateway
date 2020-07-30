@@ -8,7 +8,7 @@ const OUTPUT_DIR = 'uploads'
 const SERVICES = ['convert']
 const ORIGINAL_NAME = 'original'
 
-// TODO: move to service
+// TODO: move to service test
 const checkFileExtension = (mimetype) => {
   switch (mimetype) {
     case 'image/jpeg':

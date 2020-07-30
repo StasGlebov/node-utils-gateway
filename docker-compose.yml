@@ -12,6 +12,8 @@ services:
       - rabbitmq
     links:
       - rabbitmq
+    volumes_from:
+      - gateway
     volumes:
       - /usr/app/node_modules
       - .:/usr/app
@@ -29,13 +31,8 @@ services:
       - 3090:3090
     depends_on:
       - rabbitmq
-#  waitforrabbit:
-#    container_name: wait_for_rabbit
-#    image: dadarek/wait-for-dependencies
-#    depends_on:
-#      - rabbitmq
-#    command: rabbitmq:5672
-#    entrypoint: ["wait-for-it.sh", "-s" , "-t", "20", "conteiner_a:8000", "--"]
+    volumes:
+      - /usr/app/uploads
   rabbitmq:
     image: 'rabbitmq:3.6.6-management'
     ports:
