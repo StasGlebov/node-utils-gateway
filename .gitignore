@@ -1,5 +1,6 @@
 node_modules
 services
 data
+uploads
 .docker
 .idea

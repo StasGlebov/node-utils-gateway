@@ -4,7 +4,7 @@ volumes:
     external: true
 services:
   image_converter:
-    build: stasglebov/image-converter
+    image: stasglebov/image-converter
     container_name: image_converter
     restart: unless-stopped
     environment:
@@ -14,7 +14,7 @@ services:
     links:
       - rabbitmq
     volumes:
-      - ./uploads:/usr/src/app/uploads
+      - ./uploads:/usr/app/uploads
   gateway:
     image: stasglebov/node-utils-gateway
     container_name: gateway
@@ -28,7 +28,7 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - ./uploads:/usr/src/app/uploads
+      - ./uploads:/usr/app/uploads
   rabbitmq:
     image: 'rabbitmq:3.6.6-management'
     container_name: rabbit

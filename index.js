@@ -28,10 +28,10 @@ const storage = multer.diskStorage({
     const slug = slugidNice();
     const extension = checkFileExtension(file.mimetype)
     const path = `${__dirname}/${OUTPUT_DIR}/${slug}`
-
+    
     file.slug = slug
     file.extension = extension
-
+    
     fs.open(path, err => {
       err ? fs.mkdirSync(path, { recursive: true }) : path
       return cb(null, path)
@@ -47,8 +47,8 @@ const upload = multer({storage})
 const gateway = new Gateway({
   microservices: SERVICES,
   rabbit: {
-    url: 'amqp://guest:guest@rabbitmq:5672',
-    // url: process.env.MESSAGE_QUEUE
+    
+    url: process.env.MESSAGE_QUEUE
   },
 });
 
