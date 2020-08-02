@@ -4,7 +4,7 @@ volumes:
     external: true
 services:
   image_converter:
-    build: ./services/image-converter
+    build: stasglebov/image-converter
     container_name: image_converter
     restart: unless-stopped
     environment:
