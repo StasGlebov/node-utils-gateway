@@ -1,10 +1,11 @@
-version: '2'
+version: '2.4'
+volumes:
+  uploads:
+    external: true
 services:
   image_converter:
+    build: ./services/image-converter
     container_name: image_converter
-    build:
-      context: ./services/image-converter/
-      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
@@ -12,16 +13,11 @@ services:
       - rabbitmq
     links:
       - rabbitmq
-    volumes_from:
-      - gateway
     volumes:
-      - /usr/app/node_modules
-      - .:/usr/app
+      - ./uploads:/usr/src/app/uploads
   gateway:
+    image: stasglebov/node-utils-gateway
     container_name: gateway
-    build:
-      context: .
-      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
@@ -32,9 +28,10 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - /usr/app/uploads
+      - ./uploads:/usr/src/app/uploads
   rabbitmq:
     image: 'rabbitmq:3.6.6-management'
+    container_name: rabbit
     ports:
       - "4369:4369"
       - "5672:5672"
