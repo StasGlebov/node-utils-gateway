@@ -27,7 +27,8 @@ const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     const slug = slugidNice();
     const extension = checkFileExtension(file.mimetype)
-    const path = `${__dirname}/${OUTPUT_DIR}/${slug}`
+    // const path = `${__dirname}/${OUTPUT_DIR}/${slug}`
+    const path = `/${OUTPUT_DIR}/${slug}`
     
     file.slug = slug
     file.extension = extension
